@@ -1,14 +1,13 @@
-import Navbar from "@/components/layout/navbar";
-import Providers from "./providers";
+// app/layout.tsx
+import Navbar from "./components/navbar";
+import "./globals.css";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className="antialiased">
-        <Providers>
-          <Navbar />
-          <main>{children}</main>
-        </Providers>
+        <Navbar /> {/* ← Navbar один раз здесь */}
+        {children}
       </body>
     </html>
   );
