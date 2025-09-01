@@ -1,11 +1,21 @@
-// app/components/Navbar.tsx
 "use client";
 
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/assets/images/logo.png";
+import { useAuthStore } from "../store/useAuthStore";
+
+const links = [
+  { label: "Home", href: "/" },          // Home ведёт на /
+  { label: "Services", href: "/services" },
+  { label: "Blogs", href: "/blogs" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+];
 
 export default function Navbar() {
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+
   return (
     <nav
       className="w-full flex justify-center"
@@ -25,34 +35,36 @@ export default function Navbar() {
 
         {/* Навигационные ссылки по центру */}
         <div className="flex space-x-6 font-medium text-gray-800">
-          {["Home", "Services", "Blogs", "About", "Contact"].map((link) => (
+          {links.map((l) => (
             <Link
-              key={link}
-              href={`/${link.toLowerCase()}`}
+              key={l.label}
+              href={l.href}
               style={{ fontSize: "7.56px" }}
               className="hover:text-blue-600 transition"
             >
-              {link}
+              {l.label}
             </Link>
           ))}
         </div>
 
-        {/* Кнопка Book Now справа */}
-        <Link
-          href="/login"
-          style={{
-            width: "66.33px",
-            height: "26.17px",
-            borderRadius: "4.72px",
-            fontSize: "7.56px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          className="bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
-        >
-          Book Now
-        </Link>
+        {/* Кнопка Book Now справа — показываем, только если НЕ авторизован */}
+        {!isAuthenticated && (
+          <Link
+            href="/login"
+            style={{
+              width: "66.33px",
+              height: "26.17px",
+              borderRadius: "4.72px",
+              fontSize: "7.56px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            className="bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+          >
+            Book Now
+          </Link>
+        )}
       </div>
     </nav>
   );
